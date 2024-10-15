@@ -1,3 +1,5 @@
 {
-	"hello": "world!"
+	"routes": {
+		"records": "Records"
+	}
 }

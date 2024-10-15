@@ -7,10 +7,20 @@
 	</div>
 </header>
 <drawer-container>
-	<drawer drawer [opened]="isDrawerOpen()" mode="push" position="left" [dock]="true" dockedSize="60px" drawerClass="w-60 flex flex-col">
-		<div class="flex grow flex-col overflow-y-auto" [style.background-color]="'var(--tui-theme-color)'">
-			<span>items</span>
-		</div>
+	<drawer drawer [opened]="isDrawerOpen()" mode="push" position="left" [dock]="true" dockedSize="60px" drawerClass="w-60 flex bg-red-50 flex-col">
+		<nav class="grow flex flex-col gap-2 w-40 h-full bg-red-50 text-red-950 text-base" *transloco="let transloco; prefix: 'routes'">
+			@for (route of routes(); track $index) {
+			<a
+				*transloco="let transloco; prefix: 'routes'"
+				[routerLink]="'/' + route.path"
+				[routerLinkActiveOptions]="{ exact: true }"
+				routerLinkActive="bg-red-300"
+				class="p-2 flex hover:bg-red-300 cursor-pointer">
+				{{ transloco(route.data?.['translationKey']) }}
+			</a>
+			}
+		</nav>
+		<div class="flex grow flex-col overflow-y-auto" [style.background-color]="'var(--tui-theme-color)'"></div>
 	</drawer>
 	<div drawer-content class="flex flex-col h-screen">
 		<div class="grow">
