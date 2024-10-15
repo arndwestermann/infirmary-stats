@@ -1,0 +1,20 @@
+<header class="flex flex-none h-12 border-b px-2 py-1 justify-between items-center" [style.background-color]="'var(--tui-theme-color)'">
+	<div>
+		<button tuiButton type="button" appearance="flat" size="s" (click)="isDrawerOpen.set(!isDrawerOpen())">
+			<i class="fa-solid fa-bars text-lg"></i>
+			<tui-icon icon="@tui.fa.solid.bars" />
+		</button>
+	</div>
+</header>
+<drawer-container>
+	<drawer drawer [opened]="isDrawerOpen()" mode="push" position="left" [dock]="true" dockedSize="60px" drawerClass="w-60 flex flex-col">
+		<div class="flex grow flex-col overflow-y-auto" [style.background-color]="'var(--tui-theme-color)'">
+			<span>items</span>
+		</div>
+	</drawer>
+	<div drawer-content class="flex flex-col h-screen">
+		<div class="grow">
+			<router-outlet />
+		</div>
+	</div>
+</drawer-container>
