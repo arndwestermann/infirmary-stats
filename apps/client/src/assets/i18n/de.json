@@ -1,5 +1,43 @@
 {
+	"general": {
+		"save": "Speichern",
+		"yes": "Ja",
+		"no": "Nein"
+	},
 	"routes": {
 		"records": "archiv"
+	},
+	"records": {
+		"id": "Aufnahmenummer",
+		"arrival": "Zugang",
+		"leaving": "Abgang",
+		"from": "Von",
+		"to": "Nach",
+		"specialty": "Fachgebiet",
+		"actions": "Aktionen"
+	},
+	"specialty": {
+		"internal": "Innere",
+		"su": "SU",
+		"internalKV": "Innere/KV",
+		"vascular": "Gefäß",
+		"general": "Allgemein",
+		"trauma": "Trauma",
+		"internalCoro": "Innere/Coro",
+		"internalPVI": "Innere/PVI",
+		"suLyse": "SU/Lyse",
+		"HNO": "HNO",
+		"neuro": "Neuro",
+		"psych": "Psych",
+		"internalPM": "Innere/PM",
+		"gyn": "Gyn",
+		"interalZVK": "Inneral/ZVK",
+		"interalEPU": "Inneral/EPU",
+		"interalPFO": "Inneral/PFO",
+		"suNotcoro": "SU/Notcoro"
+	},
+	"dialogs": {
+		"confirmDelete": "Wirklich löschen?",
+		"neverAskAgain": "Nicht mehr fragen"
 	}
 }
