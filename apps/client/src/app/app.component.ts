@@ -7,7 +7,11 @@ import { TuiThemeColorService } from '@taiga-ui/cdk';
 	standalone: true,
 	imports: [RouterModule, TuiRoot],
 	selector: 'app-root',
-	templateUrl: './app.component.html',
+	template: `
+		<tui-root class="h-full" tuiTheme="light">
+			<router-outlet />
+		</tui-root>
+	`,
 	styles: `
 		:host {
 			@apply block h-full;
@@ -18,6 +22,6 @@ export class AppComponent implements OnInit {
 	private readonly theme = inject(TuiThemeColorService);
 
 	public ngOnInit(): void {
-		this.theme.color = '#22c55e';
+		this.theme.color = '#393D47';
 	}
 }
