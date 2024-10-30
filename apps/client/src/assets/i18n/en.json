@@ -5,7 +5,8 @@
 		"no": "No"
 	},
 	"routes": {
-		"records": "Records"
+		"records": "Records",
+		"heatmap": "Heatmap"
 	},
 	"records": {
 		"id": "Id",
