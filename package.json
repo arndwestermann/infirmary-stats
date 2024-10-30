@@ -28,6 +28,7 @@
     "@taiga-ui/icons-fontawesome": "^4.11.0",
     "@taiga-ui/kit": "^4.11.0",
     "@taiga-ui/layout": "^4.11.0",
+    "date-fns": "^4.1.0",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.3"
   },

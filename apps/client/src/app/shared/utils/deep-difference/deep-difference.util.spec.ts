@@ -1,12 +1,12 @@
 import { deepDifference } from './deep-difference.util';
-import { IEndeavourFile, ObjectDiff } from '../../models';
+import { DeepDiff } from '../../models';
 
 describe('deepDifference', () => {
 	const sut = deepDifference;
 
 	it('should be same object', () => {
 		const creation_date = new Date('2024-07-02T12:56:52.000Z');
-		const oldValue: IEndeavourFile = {
+		const oldValue = {
 			uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
 			hash: 'd8263f369492ad6e6205ddb10496ab88',
 			version: 1,
@@ -22,7 +22,7 @@ describe('deepDifference', () => {
 			creation_date,
 		};
 
-		const newValue: IEndeavourFile = {
+		const newValue = {
 			uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
 			hash: 'd8263f369492ad6e6205ddb10496ab88',
 			version: 1,
@@ -38,7 +38,7 @@ describe('deepDifference', () => {
 			creation_date,
 		};
 
-		const expected: ObjectDiff = {
+		const expected: DeepDiff = {
 			added: {},
 			updated: {},
 			removed: {},
@@ -64,7 +64,7 @@ describe('deepDifference', () => {
 
 	it('should be different object', () => {
 		const creation_date = new Date('2024-07-02T12:56:52.000Z');
-		const oldValue: IEndeavourFile = {
+		const oldValue = {
 			uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
 			hash: 'd8263f369492ad6e6205ddb10496ab88',
 			version: 1,
@@ -80,7 +80,7 @@ describe('deepDifference', () => {
 			creation_date,
 		};
 
-		const newValue: IEndeavourFile = {
+		const newValue = {
 			uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
 			hash: 'd8263f369492ad6e6205ddb10496ab88',
 			version: 1,
@@ -96,7 +96,7 @@ describe('deepDifference', () => {
 			creation_date,
 		};
 
-		const expected: ObjectDiff = {
+		const expected: DeepDiff = {
 			added: {},
 			updated: { type: { oldValue: 'print_image', newValue: 'invoice' } },
 			removed: {},
@@ -997,7 +997,7 @@ describe('deepDifference', () => {
 			],
 		};
 
-		const expected: ObjectDiff = {
+		const expected: DeepDiff = {
 			added: {},
 			updated: {},
 			removed: {},
@@ -1028,7 +1028,7 @@ describe('deepDifference', () => {
 			],
 		};
 
-		const expected: ObjectDiff = {
+		const expected: DeepDiff = {
 			added: {},
 			updated: {
 				arr1: {

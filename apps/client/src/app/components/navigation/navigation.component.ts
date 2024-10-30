@@ -3,8 +3,9 @@ import { DrawerComponent, DrawerContainerComponent } from '../drawer';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TuiButton, TuiIcon } from '@taiga-ui/core';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { NgClass } from '@angular/common';
 
-const angularImports = [RouterOutlet, RouterLink, RouterLinkActive];
+const angularImports = [RouterOutlet, RouterLink, RouterLinkActive, NgClass];
 const taigaUiImports = [TuiButton, TuiIcon];
 const thirdPartyImports = [TranslocoDirective];
 

@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { RecordsComponent } from './components/records/records.component';
 
 export const appRoutes: Route[] = [
 	{
@@ -8,10 +9,16 @@ export const appRoutes: Route[] = [
 		children: [
 			{
 				path: 'records',
-				component: NavigationComponent,
+				component: RecordsComponent,
 				data: {
 					translationKey: 'records',
+					icon: 'table-list',
 				},
+			},
+			{
+				path: '',
+				redirectTo: 'records',
+				pathMatch: 'full',
 			},
 		],
 	},
