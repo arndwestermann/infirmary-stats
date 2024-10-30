@@ -11,7 +11,7 @@
 		<nav class="grow flex flex-col gap-2 w-full h-full text-base border-r-2 border-gray-100" *transloco="let transloco; prefix: 'routes'">
 			@for (route of routes(); track $index) {
 			<div
-				class="flex w-full items-center p-2"
+				class="flex w-full items-center p-2 hover:bg-gray-200 cursor-pointer"
 				[routerLink]="'/' + route.path"
 				[routerLinkActiveOptions]="{ exact: true }"
 				routerLinkActive
@@ -19,7 +19,7 @@
 				[ngClass]="rla.isActive ? 'bg-gray-200' : ''">
 				<tui-icon [icon]="'@tui.fa.solid.' + route.data?.['icon']" class="mx-2" [ngClass]="!isDrawerOpen() ? 'ml-48' : 'mx-2'" />
 				@if (isDrawerOpen()) {
-				<a *transloco="let transloco; prefix: 'routes'" class="p-2 flex hover:bg-gray-200 cursor-pointer rounded w-full">
+				<a *transloco="let transloco; prefix: 'routes'" class="p-2 flex rounded w-full">
 					{{ transloco(route.data?.['translationKey']) }}
 				</a>
 				}
