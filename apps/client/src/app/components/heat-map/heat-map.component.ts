@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, isDevMode, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { IRecord, SPECIALTIES } from '../../models';
 import { DATA_STORAGE_KEY } from '../../shared/models';
@@ -142,7 +142,7 @@ export class HeatMapComponent {
 	public readonly sumSpecialty = computed(() => this.groupedBySpecialty().reduce((acc, curr) => acc + curr.value, 0));
 
 	public print(): void {
-		html2canvas(this.hostElement.nativeElement, { scale: 2 }).then((canvas) => {
+		html2canvas(this.hostElement.nativeElement, { scale: 2, logging: isDevMode() }).then((canvas) => {
 			const pdf = new jsPDF({ orientation: 'landscape', format: 'a4' });
 			const imgData = canvas.toDataURL('image/png');
 			const imgWidth = canvas.width;
