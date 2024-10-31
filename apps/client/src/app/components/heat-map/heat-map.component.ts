@@ -13,13 +13,13 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-import { TuiButton } from '@taiga-ui/core';
+import { TuiButton, TuiIcon } from '@taiga-ui/core';
 import { map } from 'rxjs';
 
 @Component({
 	selector: 'app-heat-map',
 	standalone: true,
-	imports: [NgClass, FormsModule, DatePipe, TuiInputDateRangeModule, TuiButton, TranslocoDirective],
+	imports: [NgClass, FormsModule, DatePipe, TuiInputDateRangeModule, TuiButton, TuiIcon, TranslocoDirective],
 	template: `
 		<ng-container *transloco="let transloco">
 			<div class="flex flex-col">
@@ -42,12 +42,14 @@ import { map } from 'rxjs';
 				}
 			</div>
 			<div class="flex flex-col space-y-2">
-				<div class="flex space-x-2" data-html2canvas-ignore>
+				<div class="flex space-x-2 items-center" data-html2canvas-ignore>
 					<tui-input-date-range toNativeDate [(ngModel)]="dateRange" class="w-60">
 						{{ transloco('heatmap.chooseRange') }}
 						<input placeholder="From - To" tuiTextfieldLegacy />
 					</tui-input-date-range>
-					<button type="button" tuiButton (click)="print()">Print</button>
+					<button type="button" tuiButton appearance="primary" size="m" (click)="print()">
+						<tui-icon icon="@tui.fa.solid.download" />
+					</button>
 				</div>
 
 				<div class="flex flex-col items-center space-y-2">
