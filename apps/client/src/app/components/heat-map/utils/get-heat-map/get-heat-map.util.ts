@@ -1,6 +1,6 @@
 import { startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
-import { IRecord } from '../../../models';
-import { IHeatMap } from '../models/heat-map.model';
+import { IRecord } from '../../../../models';
+import { IHeatMap } from '../../models/heat-map.model';
 
 export function getHeatMap(data: IRecord[], startDate?: Date, endDate?: Date): IHeatMap[] {
 	const heatmap: { key: Date; value: IRecord[][] }[] = [];

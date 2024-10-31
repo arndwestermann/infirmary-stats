@@ -17,6 +17,11 @@
 		"specialty": "Fachgebiet",
 		"actions": "Aktionen"
 	},
+	"heatmap": {
+		"specialty": "Fachgebiet",
+		"total": "Summe",
+		"chooseRange": "Datumsbereich auswählen"
+	},
 	"specialty": {
 		"internal": "Innere",
 		"su": "SU",

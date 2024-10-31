@@ -17,6 +17,11 @@
 		"specialty": "Specialty",
 		"actions": "Actions"
 	},
+	"heatmap": {
+		"specialty": "Specialty",
+		"total": "Total",
+		"chooseRange": "Choose range"
+	},
 	"specialty": {
 		"internal": "Internal",
 		"su": "SU",
