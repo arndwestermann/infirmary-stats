@@ -65,14 +65,16 @@ const thirdPartyImports = [TranslocoDirective];
 								{{ transloco(item.specialty) }}
 							</td>
 
-							<td *tuiCell="'actions'" tuiTd class="flex justify-center">
-								<button
-									appearance="flat-destructive"
-									iconStart="@tui.fa.solid.trash"
-									size="s"
-									tuiIconButton
-									type="button"
-									(click)="deleteRecord($event, item.uuid)"></button>
+							<td *tuiCell="'actions'" tuiTd>
+								<div class="w-full h-full flex justify-center">
+									<button
+										appearance="flat-destructive"
+										iconStart="@tui.fa.solid.trash"
+										size="s"
+										tuiIconButton
+										type="button"
+										(click)="deleteRecord($event, item.uuid)"></button>
+								</div>
 							</td>
 						</tr>
 					}
