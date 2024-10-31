@@ -1,35 +1,36 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { TuiButton, tuiDialog, TuiDialogContext, TuiDialogService, TuiIcon } from '@taiga-ui/core';
+import { TuiButton, TuiDialogService, TuiIcon } from '@taiga-ui/core';
 import { TuiTable } from '@taiga-ui/addon-table';
-import { IRecord } from '../../models';
+import { IRecord, Specialty } from '../../models';
 import { DatePipe } from '@angular/common';
 
-import { addDays, endOfMonth, format, getDate, isSameDay, isSameHour, setDate, setHours, startOfMonth } from 'date-fns';
-import { CacheService } from '../../shared/services';
-import { DATA_STORAGE_KEY, NEVER_ASK_DELETE_AGAIN_STORAGE_KEY } from '../../shared/models';
-import { fromCache } from '../../shared/utils';
+import { CSV_DATA_SEPARATOR, DATA_STORAGE_KEY, NEVER_ASK_DELETE_AGAIN_STORAGE_KEY } from '../../shared/models';
+import { fromCache, parseCSV, uid } from '../../shared/utils';
 
 import { map, tap } from 'rxjs';
 
 import { RecordFormComponent } from './components/record-form/record-form.component';
 import { PolymorpheusComponent } from '@taiga-ui/polymorpheus';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { TuiStatus } from '@taiga-ui/kit';
 import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 const angularImports = [DatePipe];
-const taigaUiImports = [TuiButton, TuiIcon, TuiTable, TuiStatus];
+const taigaUiImports = [TuiButton, TuiIcon, TuiTable];
 const thirdPartyImports = [TranslocoDirective];
 @Component({
 	selector: 'app-records',
 	standalone: true,
 	imports: [...angularImports, ...taigaUiImports, ...thirdPartyImports],
 	template: `
-		<div class="flex flex-shrink-0">
+		<div class="flex flex-shrink-0 space-x-2">
 			<button type="button" tuiButton appearance="primary" size="s" (click)="openDialog()">
 				<tui-icon icon="@tui.fa.solid.plus" />
 			</button>
+			<button type="button" tuiButton appearance="primary" size="s" (click)="fileInput.click()">
+				<tui-icon icon="@tui.fa.solid.upload" />
+			</button>
+			<input #fileInput class="hidden" type="file" accept=".csv" [multiple]="false" (change)="importFile($event)" />
 		</div>
 		<div class="grow overflow-y-auto">
 			<table tuiTable class="w-full" [columns]="columns()">
@@ -42,8 +43,8 @@ const thirdPartyImports = [TranslocoDirective];
 						}
 					</tr>
 				</thead>
-				<tbody tuiTbody [data]="data()" class="group" *transloco="let transloco; prefix: 'specialty'">
-					@for (item of data(); track $index) {
+				<tbody tuiTbody [data]="sortedData()" class="group" *transloco="let transloco; prefix: 'specialty'">
+					@for (item of sortedData(); track $index) {
 						<tr tuiTr (click)="openDialog(item)">
 							<td *tuiCell="'id'" tuiTd>
 								{{ item.id }}
@@ -105,6 +106,7 @@ export class RecordsComponent {
 	private readonly dialogService = inject(TuiDialogService);
 
 	private readonly translocoService = inject(TranslocoService);
+	private readonly data = fromCache<IRecord[]>(DATA_STORAGE_KEY, []);
 
 	public readonly locale = toSignal(
 		this.translocoService.langChanges$.pipe(
@@ -124,7 +126,7 @@ export class RecordsComponent {
 		{ initialValue: this.translocoService.getActiveLang() },
 	);
 
-	public readonly data = fromCache<IRecord[]>(DATA_STORAGE_KEY, []);
+	public readonly sortedData = computed(() => [...this.data()].sort((a, b) => a.arrival.getTime() - b.arrival.getTime()));
 	public readonly neverAskAgain = fromCache<boolean>(NEVER_ASK_DELETE_AGAIN_STORAGE_KEY, false);
 	public readonly columns = computed(() => ['id', 'arrival', 'leaving', 'from', 'to', 'specialty', 'actions']);
 
@@ -175,7 +177,67 @@ export class RecordsComponent {
 			.subscribe();
 	}
 
+	public importFile(event: Event) {
+		const file = (event.target as HTMLInputElement).files?.item(0);
+
+		if (!file) return;
+
+		const fileReader = new FileReader();
+
+		fileReader.onload = () => {
+			const parsedCsv = parseCSV<{ id: string; arrival: string; leaving: string; from: string; to: string; specialty: string }>(
+				fileReader.result as string,
+				undefined,
+				CSV_DATA_SEPARATOR,
+			);
+			const records: IRecord[] = [];
+
+			for (const element of parsedCsv) {
+				const uuid = this.getUUID();
+				const dateArrivalSplit = element.arrival.split('T');
+				const dateLeavingSplit = element.leaving.split('T');
+
+				const yearArrival = +dateArrivalSplit[0].split('.')[2];
+				const monthArrival = +dateArrivalSplit[0].split('.')[1];
+				const dayArrival = +dateArrivalSplit[0].split('.')[0];
+				const hourArrival = +dateArrivalSplit[1].split(':')[0];
+				const minuteArrival = +dateArrivalSplit[1].split(':')[1];
+				const secondArrival = +dateArrivalSplit[1].split(':')[2];
+
+				const yearLeaving = +dateLeavingSplit[0].split('.')[2];
+				const monthLeaving = +dateLeavingSplit[0].split('.')[1];
+				const dayLeaving = +dateLeavingSplit[0].split('.')[0];
+				const hourLeaving = +dateLeavingSplit[1].split(':')[0];
+				const minuteLeaving = +dateLeavingSplit[1].split(':')[1];
+				const secondLeaving = +dateLeavingSplit[1].split(':')[2];
+
+				const arrival = new Date(yearArrival, monthArrival - 1, dayArrival, hourArrival, minuteArrival, secondArrival);
+				const leaving = new Date(yearLeaving, monthLeaving - 1, dayLeaving, hourLeaving, minuteLeaving, secondLeaving);
+
+				records.push({
+					uuid: uuid,
+					id: element.id,
+					arrival,
+					leaving,
+					from: element.from,
+					to: element.to,
+					specialty: element.specialty as Specialty,
+				});
+			}
+
+			this.data.update((value) => value.concat(records));
+		};
+
+		fileReader.readAsText(file);
+	}
+
 	private removeRecord(uuid: string): void {
 		this.data.update((records) => records.filter((record) => record.uuid !== uuid));
+	}
+
+	private getUUID(): string {
+		if ('randomUUID' in crypto) return crypto.randomUUID();
+
+		return uid();
 	}
 }
