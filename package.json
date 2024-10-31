@@ -31,6 +31,8 @@
 		"@taiga-ui/legacy": "4.13.0",
 		"@taiga-ui/polymorpheus": "^4.7.4",
 		"date-fns": "^4.1.0",
+		"html2canvas": "^1.4.1",
+		"jspdf": "^2.5.2",
 		"rxjs": "~7.8.0",
 		"zone.js": "~0.14.3"
 	},
