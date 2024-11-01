@@ -6,6 +6,7 @@ export interface IRecord {
 	from: string;
 	to: string;
 	specialty: Specialty;
+	status: 'error' | 'warning' | null;
 }
 
 export const SPECIALTIES = [

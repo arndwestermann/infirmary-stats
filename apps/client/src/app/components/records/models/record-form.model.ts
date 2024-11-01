@@ -9,4 +9,5 @@ export interface IRecordForm {
 	from: FormControl<string>;
 	to: FormControl<string>;
 	specialty: FormControl<Specialty>;
+	status: FormControl<'error' | 'warning' | null>;
 }

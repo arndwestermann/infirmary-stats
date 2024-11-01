@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { TuiButton, TuiDialogService, TuiIcon } from '@taiga-ui/core';
 import { TuiTable } from '@taiga-ui/addon-table';
 import { IRecord, Specialty } from '../../models';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 
 import { CSV_DATA_SEPARATOR, CSV_LINE_SEPARATOR, DATA_STORAGE_KEY, NEVER_ASK_DELETE_AGAIN_STORAGE_KEY } from '../../shared/models';
-import { fromCache, parseCSV, uid } from '../../shared/utils';
+import { fromCache, getStatus, parseCSV, uid } from '../../shared/utils';
 
 import { map, tap } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
 import { toSignal } from '@angular/core/rxjs-interop';
 
-const angularImports = [DatePipe];
+const angularImports = [NgClass, DatePipe];
 const taigaUiImports = [TuiButton, TuiIcon, TuiTable];
 const thirdPartyImports = [TranslocoDirective];
 @Component({
@@ -45,7 +45,7 @@ const thirdPartyImports = [TranslocoDirective];
 				</thead>
 				<tbody tuiTbody [data]="sortedData()" class="group" *transloco="let transloco; prefix: 'specialty'">
 					@for (item of sortedData(); track $index) {
-						<tr tuiTr (click)="openDialog(item)">
+						<tr tuiTr (click)="openDialog(item)" [ngClass]="item.status">
 							<td *tuiCell="'id'" tuiTd>
 								{{ item.id }}
 							</td>
@@ -91,6 +91,22 @@ const thirdPartyImports = [TranslocoDirective];
 		[tuiTd] {
 			border-inline-start: none;
 			border-inline-end: none;
+		}
+
+		.error[tuiTr] td {
+			@apply bg-red-500;
+		}
+
+		.warning[tuiTr] td {
+			@apply bg-yellow-500;
+		}
+
+		[tuiTr][class*='warning']:hover td {
+			@apply bg-yellow-600;
+		}
+
+		[tuiTr][class*='error']:hover td {
+			@apply bg-red-600;
 		}
 
 		[tuiTr]:hover td {
@@ -207,7 +223,7 @@ export class RecordsComponent {
 				const arraivalDate = element.arrivalDate.split('.');
 				const arraivalTime = element.arrivalTime.split(':');
 				const leavingDate = element.leavingDate.split('.');
-				const leavingTime = element.arrivalTime.split(':');
+				const leavingTime = element.leavingTime.split(':');
 
 				const yearArrival = +arraivalDate[2];
 				const monthArrival = +arraivalDate[1];
@@ -226,6 +242,8 @@ export class RecordsComponent {
 				const arrival = new Date(yearArrival, monthArrival - 1, dayArrival, hourArrival, minuteArrival, secondArrival);
 				const leaving = new Date(yearLeaving, monthLeaving - 1, dayLeaving, hourLeaving, minuteLeaving, secondLeaving);
 
+				const status = getStatus(leaving, arrival);
+
 				records.push({
 					uuid: uuid,
 					id: element.id,
@@ -234,6 +252,7 @@ export class RecordsComponent {
 					from: element.from,
 					to: element.to,
 					specialty: element.specialty as Specialty,
+					status,
 				});
 			}
 

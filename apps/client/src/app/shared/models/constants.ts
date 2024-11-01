@@ -3,3 +3,5 @@ export const NEVER_ASK_DELETE_AGAIN_STORAGE_KEY = 'neverAskDeleteAgain';
 
 export const CSV_LINE_SEPARATOR = '\r\n';
 export const CSV_DATA_SEPARATOR = ';';
+
+export const STATUS = ['error', 'warning'] as const;

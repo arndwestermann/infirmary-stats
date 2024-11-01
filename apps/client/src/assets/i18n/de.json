@@ -15,6 +15,7 @@
 		"from": "Von",
 		"to": "Nach",
 		"specialty": "Fachgebiet",
+		"status": "Status",
 		"actions": "Aktionen"
 	},
 	"heatmap": {
@@ -45,5 +46,9 @@
 	"dialogs": {
 		"confirmDelete": "Wirklich löschen?",
 		"neverAskAgain": "Nicht mehr fragen"
+	},
+	"status": {
+		"error": "Fehler",
+		"warning": "Warnung"
 	}
 }

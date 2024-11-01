@@ -3,3 +3,4 @@ export * from './deep-difference/deep-difference.util';
 export * from './cache/cache.util';
 export * from './parse-csv/parse-csv.util';
 export * from './uid/uid.util';
+export * from './get-status/get-status.util';
