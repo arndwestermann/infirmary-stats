@@ -187,7 +187,6 @@ export class RecordsComponent {
 			})
 			.pipe(
 				tap((value) => {
-					console.log(value);
 					if (value.delete === true) this.removeRecord(uuid);
 					if (value.neverAskAgain === true) this.neverAskAgain.set(true);
 				}),
