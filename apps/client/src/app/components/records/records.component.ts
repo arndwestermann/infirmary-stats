@@ -128,7 +128,7 @@ export class RecordsComponent {
 		{ initialValue: this.translocoService.getActiveLang() },
 	);
 
-	public readonly sortedData = computed(() => [...this.data()].sort((a, b) => a.arrival.getTime() - b.arrival.getTime()));
+	public readonly sortedData = computed(() => this.data().sort((a, b) => a.arrival.getTime() - b.arrival.getTime()));
 	public readonly neverAskAgain = fromCache<boolean>(NEVER_ASK_DELETE_AGAIN_STORAGE_KEY, false);
 	public readonly columns = computed(() => ['id', 'arrival', 'leaving', 'from', 'to', 'specialty', 'actions']);
 
