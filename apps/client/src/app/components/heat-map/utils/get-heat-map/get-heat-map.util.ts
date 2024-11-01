@@ -1,4 +1,4 @@
-import { startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
+import { startOfMonth, endOfMonth, isWithinInterval, isSameDay } from 'date-fns';
 import { IRecord } from '../../../../models';
 import { IHeatMap } from '../../models/heat-map.model';
 
@@ -25,19 +25,19 @@ export function getHeatMap(data: IRecord[], startDate?: Date, endDate?: Date): I
 			}),
 		);
 
-		let count = 0;
+		let firstTime = true;
 		for (const day of daysStaying) {
 			const firstHour = entry.arrival.getHours();
 			const lastHour = entry.leaving.getHours();
 
-			const start = count === 0 ? firstHour : 0;
-			const end = count === daysStaying.length - 1 ? lastHour : 23;
+			const start = firstTime ? firstHour : 0;
+			const end = isSameDay(day.key, entry.leaving) ? lastHour : 23;
 
 			for (let hour = start; hour <= end; hour++) {
 				day.value[hour].push(entry);
 			}
 
-			count++;
+			firstTime = false;
 		}
 	}
 
