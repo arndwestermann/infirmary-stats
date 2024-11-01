@@ -15,11 +15,12 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { TuiButton, TuiIcon } from '@taiga-ui/core';
 import { map } from 'rxjs';
+import { GetCellBackgroundColorPipe } from './pipes/get-cell-background-color/get-cell-background-color.pipe';
 
 @Component({
 	selector: 'app-heat-map',
 	standalone: true,
-	imports: [NgClass, FormsModule, DatePipe, TuiInputDateRangeModule, TuiButton, TuiIcon, TranslocoDirective],
+	imports: [NgClass, FormsModule, DatePipe, TuiInputDateRangeModule, TuiButton, TuiIcon, TranslocoDirective, GetCellBackgroundColorPipe],
 	template: `
 		<ng-container *transloco="let transloco">
 			<div class="flex flex-col">
@@ -31,9 +32,7 @@ import { map } from 'rxjs';
 								@if (firstRow) {
 									<span class="font-bold">{{ $index }}:00</span>
 								}
-								<div
-									class="flex items-center justify-center border border-black size-10 box"
-									[ngClass]="hour.length >= 50 ? 'bg-red-500' : hour.length >= 45 ? 'bg-yellow-500' : 'bg-green-500'">
+								<div class="flex items-center justify-center border border-black size-10 box" [ngClass]="hour.length | getCellBackgroundColor">
 									{{ hour.length }}
 								</div>
 							</div>
