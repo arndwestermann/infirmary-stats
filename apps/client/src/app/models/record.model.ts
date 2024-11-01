@@ -18,7 +18,7 @@ export const SPECIALTIES = [
 	'internalCoro',
 	'internalPVI',
 	'suLyse',
-	'HNO',
+	'ent',
 	'neuro',
 	'psych',
 	'internalPM',
@@ -30,4 +30,3 @@ export const SPECIALTIES = [
 ] as const;
 
 export type Specialty = (typeof SPECIALTIES)[number];
-// TODO: Ask for duplicate internalPFO
